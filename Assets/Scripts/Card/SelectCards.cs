@@ -58,11 +58,10 @@ public class SelectCards : NetworkBehaviour
         }
 
         Debug.Log("Фаза выбора карт завершена!");
-        Debug.Log("Результаты выбора:");
-
-
+       
         // Уведомляем GameManager о завершении выбора
-        GlobalEventManager.OnSelectionComplete?.Invoke(playerSelections);
+        GlobalEventManager.OnSelectionCards?.Invoke(playerSelections);
+        GlobalEventManager.OnSelectionComplete?.Invoke();
     }
 
     private void SetCardsInteractable(bool interactable)

@@ -2,10 +2,14 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using static WinnerSelectionCards;
 public class CardInteractable : NetworkBehaviour
 {
     [SerializeField] private GameObject cardBack;
     [SerializeField] private GameObject cardFront;
+
+    [SerializeField] private CardType cardType; // Добавьте это поле
+    public CardType GetCardType() => cardType;
 
     private NetworkVariable<bool> isFaceUp = new NetworkVariable<bool>(false);
 

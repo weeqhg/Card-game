@@ -16,5 +16,7 @@ public enum GamePhase
 public static class GlobalEventManager
 {
     public static readonly UnityEvent OnDealingComplete = new UnityEvent();
-    public static readonly UnityEvent<Dictionary<ulong, ulong>> OnSelectionComplete = new UnityEvent<Dictionary<ulong, ulong>>();
+    public static readonly UnityEvent OnSelectionComplete = new UnityEvent();
+    public static readonly UnityEvent<Dictionary<ulong, ulong>> OnSelectionCards = new UnityEvent<Dictionary<ulong, ulong>>();
+    public static readonly UnityEvent<ulong> OnWinnerSelected = new UnityEvent<ulong>();
 }

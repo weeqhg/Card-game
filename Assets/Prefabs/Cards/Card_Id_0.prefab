@@ -72,6 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardBack: {fileID: 8697751611374624721}
   cardFront: {fileID: 8613459221973999248}
+  cardType: 0
 --- !u!114 &-4957619953878265659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +136,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0047489405, y: 0.0023742914}
+  m_Offset: {x: 0.0013827085, y: -0.00069117546}
   m_SpriteTilingProperty:
     border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
     pivot: {x: 0.5, y: 0.5}
@@ -146,7 +147,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5751126, y: 1.9787521}
+  m_Size: {x: 1.8326426, y: 2.5735226}
   m_EdgeRadius: 0
 --- !u!1 &8613459221973999248
 GameObject:
@@ -218,15 +219,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 683644785
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0.8009267, a: 1}
+  m_Sprite: {fileID: 21300000, guid: ba7439f0b46406444812aa0f0d542d58, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 2
-  m_Size: {x: 1.6, y: 2}
+  m_DrawMode: 0
+  m_Size: {x: 0, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -302,15 +303,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 683644785
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.4716981, g: 0.27115753, b: 0.02002491, a: 1}
+  m_Color: {r: 0.5, g: 0.22922039, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.6, y: 2}
+  m_Size: {x: 1.85, y: 2.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

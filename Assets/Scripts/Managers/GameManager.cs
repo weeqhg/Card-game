@@ -7,23 +7,23 @@ using UnityEngine.Events;
 public class GameManager : NetworkBehaviour
 {
     [SerializeField] private CardManager cardManager;
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private int playersRequired = 2;
 
     private NetworkVariable<GamePhase> currentPhase = new NetworkVariable<GamePhase>(GamePhase.WaitingForPlayers);
     private NetworkVariable<int> connectedPlayers = new NetworkVariable<int>(0);
 
-    private Dictionary<ulong, ulong> playerSelections = new Dictionary<ulong, ulong>();
     private void Start()
     {
         GlobalEventManager.OnDealingComplete.AddListener(OnDealingComplete);
         GlobalEventManager.OnSelectionComplete.AddListener(OnSelectionComplete);
+        GlobalEventManager.OnWinnerSelected.AddListener(OnShowResult);
     }
     public override void OnNetworkSpawn()
     {
         if (IsHost)
         {
             currentPhase.OnValueChanged += OnPhaseChanged;
-            connectedPlayers.Value = NetworkManager.Singleton.ConnectedClients.Count;
             CheckGameReady();
         }
     }
@@ -61,17 +61,22 @@ public class GameManager : NetworkBehaviour
 
     private void CheckGameReady()
     {
-        if (IsServer && connectedPlayers.Value >= playersRequired)
+        if (IsServer)
         {
+            Debug.Log("тук тук");
             StartCoroutine(StartGame());
         }
     }
 
     private IEnumerator StartGame()
     {
-        Debug.Log("Все игроки подключены! Начинаем игру...");
-        yield return new WaitForSeconds(1f);
-        currentPhase.Value = GamePhase.DealingCards;
+        yield return new WaitForSeconds(10f);
+        connectedPlayers.Value = NetworkManager.Singleton.ConnectedClients.Count;
+        if (connectedPlayers.Value >= playersRequired)
+        {
+            Debug.Log("Все игроки подключены! Начинаем игру...");
+            currentPhase.Value = GamePhase.DealingCards;
+        }
     }
 
 
@@ -91,9 +96,8 @@ public class GameManager : NetworkBehaviour
         cardManager.SelectionCards();
 
     }
-    private void OnSelectionComplete(Dictionary<ulong, ulong> playerSelected)
+    private void OnSelectionComplete()
     {
-        playerSelections = playerSelected;
         currentPhase.Value = GamePhase.Resolution;
     }
 
@@ -102,12 +106,36 @@ public class GameManager : NetworkBehaviour
         // Определяем победителя и начинаем новый раунд
         if (IsServer)
         {
-            foreach (var selection in playerSelections)
-            {
-                Debug.Log($"Игрок {selection.Key} → Карта {selection.Value}");
-            }
+            cardManager.WinnerSelectionCards();
+        }
+    }
+    
+    private void OnShowResult(ulong player)
+    {
+        ulong winnerId = player;
 
-            Invoke(nameof(StartNewRound), 3f);
+        OnShowResultClientRpc(winnerId);
+
+        Invoke("StartNewRound", 2f);
+    }
+
+
+    [ClientRpc]
+    private void OnShowResultClientRpc(ulong winnerId)
+    {
+        // Netcode автоматически вызывает это на всех клиентах
+        ShowResultUI(winnerId);
+    }
+    private void ShowResultUI(ulong winnerId)
+    {
+        if (winnerId == ulong.MaxValue)
+        {
+            uiManager.ShowWinnerText("ничья");
+        }
+        else
+        {
+            bool isWinner = NetworkManager.Singleton.LocalClientId == winnerId;
+            uiManager.ShowWinnerText(isWinner ? "победа!" : "проигрыш");
         }
     }
 
@@ -116,22 +144,6 @@ public class GameManager : NetworkBehaviour
         if (IsServer)
         {
             currentPhase.Value = GamePhase.DealingCards;
-        }
-    }
-
-    // Вызывается клиентами когда они сделали выбор
-    [ServerRpc(RequireOwnership = false)]
-    public void PlayerCardSelectedServerRpc(ulong playerId, ulong cardId)
-    {
-        //cardManager.RegisterPlayerSelection(playerId, cardId);
-    }
-
-    // Вызывается CardManager когда все игроки сделали выбор
-    public void AllPlayersSelected()
-    {
-        if (IsServer)
-        {
-            currentPhase.Value = GamePhase.Resolution;
         }
     }
 }
