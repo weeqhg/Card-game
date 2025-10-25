@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using Unity.Netcode;
 using UnityEngine;
@@ -78,5 +79,10 @@ public class CardInteractable : NetworkBehaviour
     private void SelectCardServerRpc(ulong playerId, ulong cardId)
     {
         OnCardSelected?.Invoke(playerId, cardId);
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
     }
 }

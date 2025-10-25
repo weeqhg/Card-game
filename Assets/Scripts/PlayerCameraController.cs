@@ -9,6 +9,7 @@ public class PlayerCameraManager : NetworkBehaviour
     {
         if (IsOwner)
         {
+            SetupPlayerPerspective();
             // Активируем нашу камеру и управление
             if (playerCamera != null)
                 playerCamera.SetActive(true);
@@ -19,7 +20,6 @@ public class PlayerCameraManager : NetworkBehaviour
                 playerCamera.SetActive(false);
         }
 
-        SetupPlayerPerspective();
     }
 
     private void SetupPlayerPerspective()
@@ -28,7 +28,7 @@ public class PlayerCameraManager : NetworkBehaviour
         {
             playerCamera.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
-        else
+        if (!IsHost)
         {
             playerCamera.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         }
